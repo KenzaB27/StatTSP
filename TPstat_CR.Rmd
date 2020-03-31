@@ -1,16 +1,14 @@
 ---
 title: "TP Statistique"
-author: "BOUZID Kenza"
-date: "29 mars 2020"
+author: "BOUZID Kenza, JEANNE Nathan, CANNEDDU Hugo"
+date: "1 avril 2020"
 output:
   html_document:
     df_print: paged
 ---
-```{r setup, include=FALSE}
-set.seed(287)
-````
 
 ```{r setup, include=FALSE}
+set.seed(287)
 knitr::opts_chunk$set(echo = TRUE)
 
 ## il est possible qu'avant d'installer le package TSPpackage vous deviez installer ou ré-installer Rcpp
