@@ -64,8 +64,29 @@ for ( i in 1:length(seqn)){
 # representation de temps
 
 par(mfrow=c(1,2)) # 2 graphiques sur 1 ligne
-matplot(seqn, temps, type ='p', xlab='n', ylab='temps')
-matplot(seqn, log(temps)^2, xlab='n', ylab=expression(log(temps)^2))
+matplot(seqn, temps, xlab='n', ylab='temps')
+matplot(seqn, log(temps)^2, type ='p', xlab='n', ylab=expression(log(temps)^2))
+
+# Ajuter le modèle linéaire de log(temps)^2
+
+vect_temps <- log(as.vector(temps))^2
+vect_dim <- rep(seqn,times=10)
+temps.lm <- lm(vect_temps ∼ vect_dim)
+summary(temps.lm)
+
+#Réaliser l’étude graphique des hypothèses sur les résidus :
+
+par(mfrow=c(2,2)) # 4 graphiques, sur 2 lignes et 2 colonnes
+plot(temps.lm)
+
+#• Réaliser le test de Shapiro-Wilk :
+
+shapiro.test(residuals(modele))
+
+## 2.2 Comportement par rapport au nombre de sommets: étude du comportement moyen 
+
+temps.moy <- rowMeans(temps)
+
 
 
 
