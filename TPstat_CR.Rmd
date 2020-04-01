@@ -134,7 +134,10 @@ Comparaison des temps à l'aide du package microbenchmark.
 
 Exemple d'application de microbenchmark :
 ```{r, echo=TRUE}
-microbenchmark(sqrt(x),x^0.5, times=100, setup={x <- runif(1)})
+microbenchmark(TSPbranch(couts),TSPnearest(couts), TSPsolve(couts, "repetitive_nn"), TSPsolve(couts, "farthest_insertion"), TSPsolve(couts, "two_opt"), times=20, setup={ n<-10
+  sommets <- data.frame(x = runif(n), y = runif(n))
+  couts <- distance(sommets)
+})
 ```
 
 # 2. Etude e la complexité de l'algorithme Branch and Bound
