@@ -174,10 +174,12 @@ Finalement nous allons effectuer une comparaison des temps d'exécution à l'aid
 
 Exemple d'application de microbenchmark :
 ```{r, echo=TRUE}
-microbenchmark(TSPbranch(couts),TSPnearest(couts), TSPsolve(couts, "repetitive_nn"), TSPsolve(couts, "farthest_insertion"), TSPsolve(couts, "two_opt"), times=20, setup={ n<-10
+m<-microbenchmark(TSPbranch(couts),TSPnearest(couts), TSPsolve(couts, "repetitive_nn"), TSPsolve(couts, "farthest_insertion"), TSPsolve(couts, "two_opt"), times=20, setup={ n<-10
   sommets <- data.frame(x = runif(n), y = runif(n))
   couts <- distance(sommets)
 })
+
+summary(m)
 ```
 
 Avc les résultats obtenues on peut observer que les algorithmes "two_opt" et "nearest" sont les plus rapides et ont donc des temps d'exécution proches (même ordre de grandeur de quelques centaines de secondes). 
