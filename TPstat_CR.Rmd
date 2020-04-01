@@ -3,9 +3,9 @@ title: "TP Statistique"
 author: "BOUZID Kenza, JEANNE Nathan, CANNEDDU Hugo"
 date: "1 avril 2020"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -76,7 +76,7 @@ sommets <- data.frame(x = runif(n), y = runif(n))
 
 Comparaison des longueurs de différentes méthodes : 
 
-### boxplots
+### Boxplots
    
 ```{r, echo=FALSE}
   X1 <- vector(mode="integer", length=50)
@@ -114,7 +114,7 @@ la boite de l'algorithme Branch & Bound nous permet de voir qu'après 50 essais,
 
 On observe sur le diagramme a moustache un léger avantage pour l'algorithme Branch & Bound qui obtient une longueur des chemin hamiltonien moyenne plus courte sur les 50 exécutions.
 
-### test entre 'nearest' et 'branch'
+### Test entre 'nearest' et 'branch'
 
   Nous allons maintenant comparer les algorithmes "nearest" et Branch & Bound. Pour cela, nous allons réaliser un test d'hypothèses paramétriques.
 
@@ -137,7 +137,7 @@ On a donc m<sub>nn</sub> > m<sub>b</sub> (H<sub>1</sub>), ou que l'espérance de
 Au vu de données et de nos résultats on peut donc affirmer que l'algorithme Branch & Bound renvoie de meilleurs résultats que l'algorithme "nearest".
 
 
-### tests 2 à 2 
+### Tests 2 à 2 
    
    Nous allons maintenant comparer 2 à 2 les 5 algorithmes à notre dispositions et les longueurs du plus court chemin obtenues au terme des 50 exécutions. On applique ici la procédure de Bonferroni qui consiste à tester les hypothèses suivantes (avec i != j) :
    
@@ -189,7 +189,7 @@ On remarque également que l'algorithme Branch & Bound obtient la note **b**, no
 
 Branch & Bound est donc moins performand (en temps) que tous les autres algorithmes, cependant, il reste celui proposant les meilleurs résultats. 
 
-# 2. Etude e la complexité de l'algorithme Branch and Bound
+# 2. Etude de la complexité de l'algorithme Branch and Bound
 
 ## 2.1. Comportement par rapport au nombre de sommets : premier modèle
 
@@ -244,14 +244,13 @@ abline(temps.lm)
 
 Nous remarquons que les données suivent bien un modèle linéaire, cependant l'écart observé reste important. 
 
-#### pertinence des coefficients et du modèle:
+#### Pertinence des coefficients et du modèle
   
-A partir des informations fournies par R autour du modèle étudié, nous remarquons: 
-    + des coefficients avec un taux d'erreur (écart-type) important allant jusqu'à 5.3 pour l'ordonnée à l'origine et 0.4 pour le cofficient directeur, nous ne pouvons donc pas affirmer la pertinence des coefficients du modèle linéaire.
+A partir des informations fournies par R autour du modèle étudié, nous remarquons des coefficients avec un taux d'erreur (écart-type) important allant jusqu'à 5.3 pour l'ordonnée à l'origine et 0.4 pour le cofficient directeur, nous ne pouvons donc pas affirmer la pertinence des coefficients du modèle linéaire.
 
 Ainsi, nous rejetons l'hypothèse que le $\log(temps)^2$ d'exécution de l'algorithme Branch and Bound suit un modèle linéaire.
   
-#### étude des hypothèses sur les résidus.
+#### Étude des hypothèses sur les résidus
   Les hypothèses sur les résidus à étudier sont les suivantes: 
     + Loi normale
     + Espérance nulle 
@@ -263,10 +262,13 @@ par(mfrow=c(2,2)) # 4 graphiques, sur 2 lignes et 2 colonnes
 plot(temps.lm)
 ```
 
-  Compte tenue des résultats obtenus, nous remarquons: 
-    + Les graphiques Residuals vs Fitted et Scale-Location représentent des nuages de points très écartés ainsi la variance des résidus n'est pas constante. Ainsi on dit que les résidus sont hétéroscédastiques. Les points ne présentent une tendance trop marquée sur le graphique, nous pouvons ainsi sire que l'espérance est nulle.
-    + Le graphique Normal Q-Q semble être presque complétement aligné avec un éloignement de la droite au niveau des extrémités, nous aurons donc envie d'affirmer que l'hypothèse de Loi normale est vraie (à confirmer avec d'autres tests cf test de Shapiro-Wilk)
-    + Le graphique Residuals vs Leverage montre l'influence des échantillons. Nous remarquons l'existence d'outliers (points très eloignés des autres). Ainsi, une multitude de points ne contribuent pas à la construction de la droite du modèle linéaire. 
+Compte tenue des résultats obtenus, nous remarquons: 
+
+  + Les graphiques Residuals vs Fitted et Scale-Location représentent des nuages de points très écartés ainsi la variance des résidus n'est pas constante. Ainsi on dit que les résidus sont hétéroscédastiques. Les points ne présentent une tendance trop marquée sur le graphique, nous pouvons ainsi sire que l'espérance est nulle.
+    
+  + Le graphique Normal Q-Q semble être presque complétement aligné avec un éloignement de la droite au niveau des extrémités, nous aurons donc envie d'affirmer que l'hypothèse de Loi normale est vraie (à confirmer avec d'autres tests cf test de Shapiro-Wilk)
+
+  + Le graphique Residuals vs Leverage montre l'influence des échantillons. Nous remarquons l'existence d'outliers (points très eloignés des autres). Ainsi, une multitude de points ne contribuent pas à la construction de la droite du modèle linéaire. 
 
 Au vu du rejet de quelques unes des 4 hypothèses, le modèle n'est plus valable. Vérifions si les résidus suivent quand même une loi normale.
 
@@ -314,7 +316,9 @@ plot(temps.moy_lm)
 ```
 
   + Les graphiques Residuals vs Fitted et Scale-Location représentent des points peu répartis selon les abscisses ainsi la variance des résidus est constante. Les points présentent une tendance trop marquée sur le graphique, ainsi l'espérance n'est pas nulle.
+  
   + Le graphique Normal Q-Q semble n'est pas du tout aligné donc les résidus ne suivent pas une loi normale.
+  
   + Le graphique Residuals vs Leverage montre l'influence des échantillons. Nous ne remarquons pas l'existence d'outliers (points très eloignés des autres ou spécialement en dehors des bornes par rapport à la distance de Cook). Ainsi, une multitude de points contribuent à la construction de la droite du modèle linéaire. 
   
     Compte tenu de ces orbservations, nous pouvons conclure que le modèle n'est pas juste. Afin d'afiner le modèle, on pourrait precéder au nettoyadge des données en éliminant les points abbérrants détectés avec les graphes de résidus.
@@ -341,7 +345,7 @@ data.graph <- data.frame(read.csv('DonneesTSP.csv'))
 
 #### Ajustement du modèle linéaire de $\log(temps.moy)^2$ en fonction de toutes les variables présentes. Modèle sans constante.
 
-Mise en \oe uvre d'une sélection de variables pour ne garder que les variables pertinentes.
+Mise en oeuvre d'une sélection de variables pour ne garder que les variables pertinentes.
 
 ````{r, echo=FALSE}
 data_temps <- log(data.graph$tps)
@@ -357,7 +361,7 @@ On créer un modèle linéaire multi-dimensionnel pour l'ensemble des dimensions
 
 On remarque que les coefficients du modèle linéaire obtenu sont plus ou moins importants par rapport à leus valeurs. Les coéfficients les plus faibles correspondent aux paramètres les moins pertinents pour notre étude (par exemple le diamètre). 
 
-#### Mise en \oe uvre d'une sélection de variables pour ne garder que les variables pertinentes.
+#### Mise en oeuvre d'une sélection de variables pour ne garder que les variables pertinentes.
 
 Nous appliquons la fonction step de R qui nous permet d'éliminer les coefficients non pertienents pour notre étude. 
 
@@ -381,18 +385,22 @@ Compte tenu des résulats obtenu suite à la réduction des degrés de liberté 
 
 #### Analyse de la validité du modèle : 
 
-##### pertinence des coefficients et du modèle,
+##### Pertinence des coefficients et du modèle,
 Nous remarquons des coefficients plus ou moins importants selon leur pertinenence avec des écarts plutôt corrects (en comparaison avec les modèles étudiés auparavant). Les p valeurs sont assez faibles pour la globalité des coefficients. Nous pouvons ainsi conclure de la pertinenece des coefficients du modèle linéaire multidimensionnel. Le vecteur directeur de ce modèle présente des coefficients corrects. La constante à l'origine ne présente pas d'écart important (seulement 0.49 vs 13.10 pour les premiers modèles). 
 
-##### étude des hypothèses sur les résidus.
+##### Étude des hypothèses sur les résidus.
   
 ```{r}
 par(mfrow=c(2,2)) # 4 graphiques, sur 2 lignes et 2 colonnes
 plot(new_lm)
 ```
-    + Les graphiques Residuals vs Fitted et Scale-Location représentent des points peu répartis selon les abscisses ainsi la variance des résidus est constante. Les points présentent une tendance pas très marquée sur le graphique, ainsi l'espérance est nulle.
-    + Le graphique Normal Q-Q semble être presque complétement aligné avec un éloignement de la droite au niveau des extrémités, nous aurons donc envie d'affirmer que l'hypothèse de Loi normale pour les résidus est vraie (à confirmer avec d'autres tests cf test de Shapiro-Wilk)
-    + Le graphique Residuals vs Leverage montre l'influence des échantillons. Nous ne remarquons pas l'existence d'outliers (points très eloignés des autres ou spécialement en dehors des bornes par rapport à la distance de Cook). Ainsi, une multitude de points contribuent à la construction de la droite du modèle linéaire. 
+    
+  + Les graphiques Residuals vs Fitted et Scale-Location représentent des points peu répartis selon les abscisses ainsi la variance des résidus est constante. Les points présentent une tendance pas très marquée sur le graphique, ainsi l'espérance est nulle.
+  
+  + Le graphique Normal Q-Q semble être presque complétement aligné avec un éloignement de la droite au niveau des extrémités, nous aurons donc envie d'affirmer que l'hypothèse de Loi normale pour les résidus est vraie (à confirmer avec d'autres tests cf test de Shapiro-Wilk)
+    
+  + Le graphique Residuals vs Leverage montre l'influence des échantillons. Nous ne remarquons pas l'existence d'outliers (points très eloignés des autres ou spécialement en dehors des bornes par rapport à la distance de Cook). Ainsi, une multitude de points contribuent à la construction de la droite du modèle linéaire. 
+  
 
 ```{r, echo=FALSE}
 shapiro.test(residuals(new_lm))
