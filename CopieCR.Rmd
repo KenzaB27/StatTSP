@@ -3,7 +3,6 @@ title: "TP Statistique"
 author: "BOUZID Kenza, JEANNE Nathan, CANNEDDU Hugo"
 date: "1 avril 2020"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -76,7 +75,7 @@ sommets <- data.frame(x = runif(n), y = runif(n))
 
 Comparaison des longueurs de différentes méthodes : 
 
-### boxplots
+   * boxplots
    
 ```{r, echo=FALSE}
   X1 <- vector(mode="integer", length=50)
@@ -100,94 +99,47 @@ Comparaison des longueurs de différentes méthodes :
     X4[i]<-v4
     X5[i]<-v5
   }
-
+  
+  U1 <- rnorm(100)
+  U2 <- rnorm(100,5)
+  U3 <- rnorm(100,0,8)
+  U4 <- rnorm(100,10)
+  U5 <- rnorm(100,10,3)
+  
   
   mat <- cbind(X1,X2,X3,X4,X5)
   colnames(mat)<-c("Branch","Nearest","repetitive_nn","insertion","two_opt")
   par(mfrow=c(1,1))
   boxplot(mat,notch=TRUE)
 ```   
+#TODO : Commenter le diagramme a moustaches (hihi)
 
-Les boxplots ci dessus correspondent respectivement aux algorithme "branch", "nearest", "repetitive_nn", "farthest_insertion" et "two_opt". (de gauche à droite).
 
-la boite de l'algorithme Branch & Bound nous permet de voir qu'après 50 essais, cet algorithme obtient la plus petote valeur minimale, maximale et moyenne, ce qui en fait l'algorithme avec les meilleurs résultats sur les 50 tests parmi les 5 méthodes de calcul des plus courts chemins disponibles.
-
-On observe sur le diagramme a moustache un léger avantage pour l'algorithme Branch & Bound qui obtient une longueur des chemin hamiltonien moyenne plus courte sur les 50 exécutions.
-
-### test entre 'nearest' et 'branch'
-
-  Nous allons maintenant comparer les algorithmes "nearest" et Branch & Bound. Pour cela, nous allons réaliser un test d'hypothèses paramétriques.
-
-  Soit m<sub>nn</sub> et m<sub>b</sub> les espérances respectives des algorithmes des plus proches voisins et de Branch&Bound. Les hypothèses de notre test vont être :
-
-  * (H<sub>0</sub>) -> m<sub>nn</sub> - m<sub>b</sub> <= 0
-  * (H<sub>1</sub>) -> m<sub>nn</sub> - m<sub>b</sub> > 0   
+   * test entre 'nearest' et 'branch'
    
-Nous cherchons ainsi la p_value afin de rejetter ou non l'hypothèse.
-On utilise le code ci-dessous avec X2 les résultats obtenus pour l'algorithme "nearest" et X1 pour Branch & Bound.
-Le test porte ici sur l'espérance d'une loi normale (étant donné que les longueurs obtenues suivent une loi normale).
-
-```{r, echo=TRUE}
-  t.test(X2, X1, mu=0, paired=TRUE, alternative='greater')
-```
-On obtient une p_value de l'ordre de 10<sup>-11</sup>. 
-Celle-ci est inférieure a alpha = 1%, on rejette donc l'hypothèse (H<sub>0</sub>) -> m<sub>nn</sub> - m<sub>b</sub> <= 0.
-On a donc m<sub>nn</sub> > m<sub>b</sub> (H<sub>1</sub>), ou que l'espérance des longueurs obtenues avec Branch & Bound est plus faible que celles obtenues avec "de l'algorithme des plus proches voisins"nearest".
-
-Au vu de données et de nos résultats on peut donc affirmer que l'algorithme Branch & Bound renvoie de meilleurs résultats que l'algorithme "nearest".
-
-
-### tests 2 à 2 
    
-   Nous allons maintenant comparer 2 à 2 les 5 algorithmes à notre dispositions et les longueurs du plus court chemin obtenues au terme des 50 exécutions. On applique ici la procédure de Bonferroni qui consiste à tester les hypothèses suivantes (avec i != j) :
-   
-  * (H<sub>0</sub>) -> m<sub>i</sub> = m<sub>j</sub>
-  * (H<sub>1</sub>) -> m<sub>i</sub> != m<sub>j</sub> 
 
-Avec  m<sub>i</sub> et m<sub>j</sub> la moyenne des longueurs obtenues par 2 algorithmes au choix.
-        
-Le test nous donne le résultat ci-dessous :
-   
+   * tests 2 à 2 
 ```{r, echo=FALSE}
 results<- c(X1,X2,X3,X4,X5)
 methods<- c(rep("branch", 50),rep("nearest", 50),rep("repetitive_nn", 50),rep("farthest_insertion", 50),rep("two_opt", 50))
 
 pairwise.t.test(results,methods,adjust.method="bonferroni")
 ```
-
-  On obtient un tableau des différentes p_valeurs obtenues entre les algorithmes 2 à 2.
-Pour chaque p-value <= alpha (où alpha représente le risque, par défaut 5%), on rejette H<sub>0</sub>. 
-Ainsi pour chaque rejet les algorithmes donnent des longueurs moyennes différentes (H<sub>1</sub>), en revanche ne pas rejeter l'hypothése ne permet pas d'affirmer que les algorithmes ont la même longeur moyenne mais il est possible que leurs résultats soient proches.
-
-Dans nos résultats, les algorithmes dont l'esperance des longueurs obtenues n'est pas identiques (avec un risque alpha = 5%) sont les couples ci-dessous :
-
-  * nearest / branch
-  * farthest_insertion / nearest
-  * two_opt / branch
-  * repetitive_nn / nearest
-  * two_opt / repetitive_nn
-
-  On remarque que les algorithmes "nearest" et Branch & Bound ont des espérances des longueurs obtenues différentes, ce qui rejoint les résultats obtenus précédemment.
-  
+#TODO : conclure 
+# Note : Si la p-value est 1, 100% de chance que ????
 
 ## 1.2. Temps de calcul
 
-Finalement nous allons effectuer une comparaison des temps d'exécution à l'aide du package microbenchmark afin de déterminer l'algorithme le plus performant.
+Comparaison des temps à l'aide du package microbenchmark.
 
 Exemple d'application de microbenchmark :
 ```{r, echo=TRUE}
-m<-microbenchmark(TSPbranch(couts),TSPnearest(couts), TSPsolve(couts, "repetitive_nn"), TSPsolve(couts, "farthest_insertion"), TSPsolve(couts, "two_opt"), times=20, setup={ n<-10
+microbenchmark(TSPbranch(couts),TSPnearest(couts), TSPsolve(couts, "repetitive_nn"), TSPsolve(couts, "farthest_insertion"), TSPsolve(couts, "two_opt"), times=20, setup={ n<-10
   sommets <- data.frame(x = runif(n), y = runif(n))
   couts <- distance(sommets)
 })
-
-summary(m)
 ```
-
-Avc les résultats obtenues on peut observer que les algorithmes "two_opt" et "nearest" sont les plus rapides et ont donc des temps d'exécution proches (même ordre de grandeur de quelques centaines de secondes). 
-On remarque également que l'algorithme Branch & Bound obtient la note **b**, note moyenne ("repetitive_nn" ayant la pire note avec un temps d'exécution moyen 2 fois plus long que le Branch & Bound et 50 fois plus long que "nearest", le plus rapide). 
-
-Branch & Bound est donc moins performand (en temps) que tous les autres algorithmes, cependant, il reste celui proposant les meilleurs résultats. 
 
 # 2. Etude e la complexité de l'algorithme Branch and Bound
 
@@ -232,7 +184,7 @@ summary(temps.lm)
 
 ````
 
-#### Analyse de la validité du modèle : 
+####Analyse de la validité du modèle : 
 
 A partir des résultats obtenus, nous remarquons un ration $R^2$ de `r summary(temps.lm)$r.squared` qui est assez proche de 1. Cela signifie que les observations s'éloignent un peu du modèle prédit. En effet, le graphique observé montre une courbe pas tout à fait linéaire. 
 
@@ -244,7 +196,7 @@ abline(temps.lm)
 
 Nous remarquons que les données suivent bien un modèle linéaire, cependant l'écart observé reste important. 
 
-#### pertinence des coefficients et du modèle:
+####pertinence des coefficients et du modèle:
   
 A partir des informations fournies par R autour du modèle étudié, nous remarquons: 
     + des coefficients avec un taux d'erreur (écart-type) important allant jusqu'à 5.3 pour l'ordonnée à l'origine et 0.4 pour le cofficient directeur, nous ne pouvons donc pas affirmer la pertinence des coefficients du modèle linéaire.
@@ -252,7 +204,7 @@ A partir des informations fournies par R autour du modèle étudié, nous remarq
 
 Ainsi, nous rejetons l'hypothèse que le $\log(temps)^2$ d'exécution de l'algorithme Branch and Bound suit un modèle linéaire.
   
-#### étude des hypothèses sur les résidus.
+####étude des hypothèses sur les résidus.
   Les hypothèses sur les résidus à étudier sont les suivantes: 
     + Loi normale
     + Espérance nulle 
@@ -313,10 +265,10 @@ par(mfrow=c(2,2)) # 4 graphiques, sur 2 lignes et 2 colonnes
 plot(temps.moy_lm)
 ```
 
-  + Les graphiques Residuals vs Fitted et Scale-Location représentent des points peu répartis selon les abscisses ainsi la variance des résidus est constante. Les points présentent une tendance trop marquée sur le graphique, ainsi l'espérance n'est pas nulle.
-  + Le graphique Normal Q-Q semble n'est pas du tout aligné donc les résidus ne suivent pas une loi normale.
-  + Le graphique Residuals vs Leverage montre l'influence des échantillons. Nous ne remarquons pas l'existence d'outliers (points très eloignés des autres ou spécialement en dehors des bornes par rapport à la distance de Cook). Ainsi, une multitude de points contribuent à la construction de la droite du modèle linéaire. 
-  
+    + Les graphiques Residuals vs Fitted et Scale-Location représentent des points peu répartis selon les abscisses ainsi la variance des résidus est constante. Les points présentent une tendance trop marquée sur le graphique, ainsi l'espérance n'est pas nulle.
+    + Le graphique Normal Q-Q semble n'est pas du tout aligné donc les résidus ne suivent pas une loi normale.
+    + Le graphique Residuals vs Leverage montre l'influence des échantillons. Nous ne remarquons pas l'existence d'outliers (points très eloignés des autres ou spécialement en dehors des bornes par rapport à la distance de Cook). Ainsi, une multitude de points contribuent à la construction de la droite du modèle linéaire. 
+    
     Compte tenu de ces orbservations, nous pouvons conclure que le modèle n'est pas juste. Afin d'afiner le modèle, on pourrait precéder au nettoyadge des données en éliminant les points abbérrants détectés avec les graphes de résidus.
 
 Pour vérifier si les résidus suivent une loi normale, nous faisons le test de Shapiro-Wilk : 
@@ -375,10 +327,8 @@ summary(new_lm)
 ````
 Nous remarquons que le coefficient du test de Fisher a augmenté par rapport au modèle avant réduction des degrés de liberté. La p-valeur reste très faible. ainsi le modèle est bien validée. 
 
-##### Remarque par rapport aux paramètres retenus
-
+#####Remarque par rapport aux paramètres retenus
 Compte tenu des résulats obtenu suite à la réduction des degrés de liberté du modèle, nous remarquons que certains coeeficients sont bien retenus bien que ceux ci semblent pas pertienents pour l'étude de manière individuelle. Ceci st le cas pour sd.dist ou encore sd.deg qui ne semblent être d'une grande influence sur le modèle au vu de leur faible coefficient. Cependant, il semble rapporter une plus-value pour l'ensemble du modèle.
-
 #### Analyse de la validité du modèle : 
 
 ##### pertinence des coefficients et du modèle,

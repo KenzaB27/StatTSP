@@ -2,7 +2,9 @@
 title: "TP Statistique"
 author: "Mathieu Richelmy, Arthur Tondereau, Yoan Simiad--Cossin"
 date: "31 mars 2020"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 # 0. Visualisation de chemins

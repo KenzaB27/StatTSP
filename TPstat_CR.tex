@@ -1,0 +1,833 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={TP Statistique},
+  pdfauthor={BOUZID Kenza, JEANNE Nathan, CANNEDDU Hugo},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{TP Statistique}
+\author{BOUZID Kenza, JEANNE Nathan, CANNEDDU Hugo}
+\date{1 avril 2020}
+
+\begin{document}
+\maketitle
+
+Voici le plan de ce qui sera fait dans le TP.
+
+\hypertarget{visualisation-de-chemins}{%
+\section{0. Visualisation de chemins}\label{visualisation-de-chemins}}
+
+Lecture du fichier des villes :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{villes <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'DonneesGPSvilles.csv'}\NormalTok{,}\DataTypeTok{header=}\OtherTok{TRUE}\NormalTok{,}\DataTypeTok{dec=}\StringTok{'.'}\NormalTok{,}\DataTypeTok{sep=}\StringTok{';'}\NormalTok{,}\DataTypeTok{quote=}\StringTok{"}\CharTok{\textbackslash{}"}\StringTok{"}\NormalTok{)}
+\KeywordTok{str}\NormalTok{(villes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    22 obs. of  5 variables:
+##  $ EU_circo : Factor w/ 7 levels "ÃŽle-de-France",..: 6 6 4 3 7 4 3 2 3 4 ...
+##  $ region   : Factor w/ 22 levels "Alsace","Aquitaine",..: 22 10 19 11 2 5 9 3 6 17 ...
+##  $ ville    : Factor w/ 22 levels "Ajaccio","Amiens",..: 11 1 2 3 4 5 6 7 8 9 ...
+##  $ latitude : num  45.7 41.9 49.9 47.2 44.8 ...
+##  $ longitude: num  4.847 8.733 2.3 6.033 -0.567 ...
+\end{verbatim}
+
+Représentation des chemins par plus proches voisins et du chemin optimal
+:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{coord <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(villes}\OperatorTok{$}\NormalTok{longitude,villes}\OperatorTok{$}\NormalTok{latitude)}
+\NormalTok{dist <-}\StringTok{ }\KeywordTok{distanceGPS}\NormalTok{(coord)}
+\NormalTok{voisins <-}\StringTok{ }\KeywordTok{TSPnearest}\NormalTok{(dist)}
+
+\NormalTok{pathOpt <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{8}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{21}\NormalTok{,}\DecValTok{13}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{17}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{19}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DecValTok{18}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{22}\NormalTok{,}\DecValTok{14}\NormalTok{,}\DecValTok{12}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{),}\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\KeywordTok{plotTrace}\NormalTok{(coord[voisins}\OperatorTok{$}\NormalTok{chemin,], }\DataTypeTok{title=}\StringTok{'Plus proches voisins'}\NormalTok{)}
+\KeywordTok{plotTrace}\NormalTok{(coord[pathOpt,], }\DataTypeTok{title=}\StringTok{'Chemin optimal'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+Les longueurs des trajets (à vol d'oiseau) valent respectivement, pour
+la méthode des plus proches voisins :
+
+\begin{verbatim}
+## [1] 4303.568
+\end{verbatim}
+
+et pour la méthode optimale :
+
+\begin{verbatim}
+## [1] 3793.06
+\end{verbatim}
+
+Ceci illustre bien l'intérêt d'un algorithme de voyageur de commerce.
+Nous allons dans la suite étudier les performances de cet algorithme.
+
+\hypertarget{comparaison-dalgorithmes}{%
+\section{1. Comparaison d'algorithmes}\label{comparaison-dalgorithmes}}
+
+Nombre de sommets fixes et graphes ``identiques''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{      n <-}\StringTok{ }\DecValTok{10}
+\NormalTok{sommets <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{runif}\NormalTok{(n), }\DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(n))}
+\NormalTok{  couts <-}\StringTok{ }\KeywordTok{distance}\NormalTok{(sommets)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{longueur-des-chemins}{%
+\subsection{1.1. Longueur des chemins}\label{longueur-des-chemins}}
+
+Comparaison des longueurs de différentes méthodes :
+
+\hypertarget{boxplots}{%
+\subsubsection{boxplots}\label{boxplots}}
+
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+Les boxplots ci dessus correspondent respectivement aux algorithme
+``branch'', ``nearest'', ``repetitive\_nn'', ``farthest\_insertion'' et
+``two\_opt''. (de gauche à droite).
+
+la boite de l'algorithme Branch \& Bound nous permet de voir qu'après 50
+essais, cet algorithme obtient la plus petote valeur minimale, maximale
+et moyenne, ce qui en fait l'algorithme avec les meilleurs résultats sur
+les 50 tests parmi les 5 méthodes de calcul des plus courts chemins
+disponibles.
+
+On observe sur le diagramme a moustache un léger avantage pour
+l'algorithme Branch \& Bound qui obtient une longueur des chemin
+hamiltonien moyenne plus courte sur les 50 exécutions.
+
+\hypertarget{test-entre-nearest-et-branch}{%
+\subsubsection{test entre `nearest' et
+`branch'}\label{test-entre-nearest-et-branch}}
+
+Nous allons maintenant comparer les algorithmes ``nearest'' et Branch \&
+Bound. Pour cela, nous allons réaliser un test d'hypothèses
+paramétriques.
+
+Soit mnn et mb les espérances respectives des algorithmes des plus
+proches voisins et de Branch\&Bound. Les hypothèses de notre test vont
+être :
+
+\begin{itemize}
+\tightlist
+\item
+  (H0) -\textgreater{} mnn - mb \textless= 0
+\item
+  (H1) -\textgreater{} mnn - mb \textgreater{} 0
+\end{itemize}
+
+Nous cherchons ainsi la p\_value afin de rejetter ou non l'hypothèse. On
+utilise le code ci-dessous avec X2 les résultats obtenus pour
+l'algorithme ``nearest'' et X1 pour Branch \& Bound. Le test porte ici
+sur l'espérance d'une loi normale (étant donné que les longueurs
+obtenues suivent une loi normale).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+  \KeywordTok{t.test}\NormalTok{(X2, X1, }\DataTypeTok{mu=}\DecValTok{0}\NormalTok{, }\DataTypeTok{paired=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{alternative=}\StringTok{'greater'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Paired t-test
+## 
+## data:  X2 and X1
+## t = 8.3472, df = 49, p-value = 2.827e-11
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  0.3015106       Inf
+## sample estimates:
+## mean of the differences 
+##               0.3772898
+\end{verbatim}
+
+On obtient une p\_value de l'ordre de 10-11. Celle-ci est inférieure a
+alpha = 1\%, on rejette donc l'hypothèse (H0) -\textgreater{} mnn - mb
+\textless= 0. On a donc mnn \textgreater{} mb (H1), ou que l'espérance
+des longueurs obtenues avec Branch \& Bound est plus faible que celles
+obtenues avec ``de l'algorithme des plus proches voisins''nearest".
+
+Au vu de données et de nos résultats on peut donc affirmer que
+l'algorithme Branch \& Bound renvoie de meilleurs résultats que
+l'algorithme ``nearest''.
+
+\hypertarget{tests-2-uxe0-2}{%
+\subsubsection{tests 2 à 2}\label{tests-2-uxe0-2}}
+
+Nous allons maintenant comparer 2 à 2 les 5 algorithmes à notre
+dispositions et les longueurs du plus court chemin obtenues au terme des
+50 exécutions. On applique ici la procédure de Bonferroni qui consiste à
+tester les hypothèses suivantes (avec i != j) :
+
+\begin{itemize}
+\tightlist
+\item
+  (H0) -\textgreater{} mi = mj
+\item
+  (H1) -\textgreater{} mi != mj
+\end{itemize}
+
+Avec mi et mj la moyenne des longueurs obtenues par 2 algorithmes au
+choix.
+
+Le test nous donne le résultat ci-dessous :
+
+\begin{verbatim}
+## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  results and methods 
+## 
+##                    branch  farthest_insertion nearest repetitive_nn
+## farthest_insertion 1.00000 -                  -       -            
+## nearest            0.00015 0.00149            -       -            
+## repetitive_nn      0.87400 1.00000            0.01167 -            
+## two_opt            0.00298 0.01670            1.00000 0.09156      
+## 
+## P value adjustment method: holm
+\end{verbatim}
+
+On obtient un tableau des différentes p\_valeurs obtenues entre les
+algorithmes 2 à 2. Pour chaque p-value \textless= alpha (où alpha
+représente le risque, par défaut 5\%), on rejette H0. Ainsi pour chaque
+rejet les algorithmes donnent des longueurs moyennes différentes (H1),
+en revanche ne pas rejeter l'hypothése ne permet pas d'affirmer que les
+algorithmes ont la même longeur moyenne mais il est possible que leurs
+résultats soient proches.
+
+Dans nos résultats, les algorithmes dont l'esperance des longueurs
+obtenues n'est pas identiques (avec un risque alpha = 5\%) sont les
+couples ci-dessous :
+
+\begin{itemize}
+\tightlist
+\item
+  nearest / branch
+\item
+  farthest\_insertion / nearest
+\item
+  two\_opt / branch
+\item
+  repetitive\_nn / nearest
+\item
+  two\_opt / repetitive\_nn
+\end{itemize}
+
+On remarque que les algorithmes ``nearest'' et Branch \& Bound ont des
+espérances des longueurs obtenues différentes, ce qui rejoint les
+résultats obtenus précédemment.
+
+\hypertarget{temps-de-calcul}{%
+\subsection{1.2. Temps de calcul}\label{temps-de-calcul}}
+
+Finalement nous allons effectuer une comparaison des temps d'exécution à
+l'aide du package microbenchmark afin de déterminer l'algorithme le plus
+performant.
+
+Exemple d'application de microbenchmark :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m<-}\KeywordTok{microbenchmark}\NormalTok{(}\KeywordTok{TSPbranch}\NormalTok{(couts),}\KeywordTok{TSPnearest}\NormalTok{(couts), }\KeywordTok{TSPsolve}\NormalTok{(couts, }\StringTok{"repetitive_nn"}\NormalTok{), }\KeywordTok{TSPsolve}\NormalTok{(couts, }\StringTok{"farthest_insertion"}\NormalTok{), }\KeywordTok{TSPsolve}\NormalTok{(couts, }\StringTok{"two_opt"}\NormalTok{), }\DataTypeTok{times=}\DecValTok{20}\NormalTok{, }\DataTypeTok{setup=}\NormalTok{\{ n<-}\DecValTok{10}
+\NormalTok{  sommets <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{runif}\NormalTok{(n), }\DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(n))}
+\NormalTok{  couts <-}\StringTok{ }\KeywordTok{distance}\NormalTok{(sommets)}
+\NormalTok{\})}
+
+\KeywordTok{summary}\NormalTok{(m)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                    expr    min      lq     mean  median      uq
+## 1                      TSPbranch(couts) 1029.4 2211.00 6091.730 4782.10 7178.00
+## 2                     TSPnearest(couts)    9.4   15.25   24.540   19.55   30.80
+## 3      TSPsolve(couts, "repetitive_nn") 5361.1 6268.40 7369.770 7245.60 8070.75
+## 4 TSPsolve(couts, "farthest_insertion")  762.1 1085.45 1284.175 1197.90 1426.95
+## 5            TSPsolve(couts, "two_opt")  442.2  638.30  809.155  741.80  814.05
+##       max neval cld
+## 1 27607.2    20   b
+## 2    69.4    20  a 
+## 3 11301.9    20   b
+## 4  2533.8    20  a 
+## 5  2704.1    20  a
+\end{verbatim}
+
+Avc les résultats obtenues on peut observer que les algorithmes
+``two\_opt'' et ``nearest'' sont les plus rapides et ont donc des temps
+d'exécution proches (même ordre de grandeur de quelques centaines de
+secondes). On remarque également que l'algorithme Branch \& Bound
+obtient la note \textbf{b}, note moyenne (``repetitive\_nn'' ayant la
+pire note avec un temps d'exécution moyen 2 fois plus long que le Branch
+\& Bound et 50 fois plus long que ``nearest'', le plus rapide).
+
+Branch \& Bound est donc moins performand (en temps) que tous les autres
+algorithmes, cependant, il reste celui proposant les meilleurs
+résultats.
+
+\hypertarget{etude-e-la-complexituxe9-de-lalgorithme-branch-and-bound}{%
+\section{2. Etude e la complexité de l'algorithme Branch and
+Bound}\label{etude-e-la-complexituxe9-de-lalgorithme-branch-and-bound}}
+
+\hypertarget{comportement-par-rapport-au-nombre-de-sommets-premier-moduxe8le}{%
+\subsection{2.1. Comportement par rapport au nombre de sommets : premier
+modèle}\label{comportement-par-rapport-au-nombre-de-sommets-premier-moduxe8le}}
+
+Récupération du temps sur 10 graphes pour différentes valeurs de \(n\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{seqn <-}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{20}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+
+\CommentTok{#calcul de temps}
+\NormalTok{temps<-}\KeywordTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DataTypeTok{nrow=}\DecValTok{17}\NormalTok{,}\DataTypeTok{ncol=}\DecValTok{10}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ ( i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(seqn))\{}
+\NormalTok{  temps[i,]<-}\KeywordTok{microbenchmark}\NormalTok{(}\KeywordTok{TSPsolve}\NormalTok{(couts, }\DataTypeTok{method =} \StringTok{"branch"}\NormalTok{),}
+                           \DataTypeTok{times =} \DecValTok{10}\NormalTok{,}
+                           \DataTypeTok{setup =}\NormalTok{ \{ n <-}\StringTok{ }\NormalTok{seqn[i]}
+\NormalTok{                           couts <-}\StringTok{ }\KeywordTok{distance}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{runif}\NormalTok{(n), }\DataTypeTok{y =} \KeywordTok{runif}\NormalTok{(n)))\}}
+\NormalTok{  )}\OperatorTok{$}\NormalTok{time}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Visualisation de temps en fonction de n puis de \(\log(temps)^2\) en
+fonction de n:
+
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+Nous remarquons le comportement exponentionnelle du temps en fonction de
+n, ainsi il s'agit bien d'une régression linéaire pour \(\log(temps)^2\)
+en fonction de n.~
+
+Ajustement du modèle linéaire de \(\log(temps)^2\) en fonction de \(n\).
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = vect_temps ~ vect_dim)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -69.830 -17.961   2.863  20.040  50.165 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   60.552      5.004   12.10   <2e-16 ***
+## vect_dim      14.087      0.386   36.49   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 24.66 on 168 degrees of freedom
+## Multiple R-squared:  0.888,  Adjusted R-squared:  0.8873 
+## F-statistic:  1332 on 1 and 168 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\hypertarget{analyse-de-la-validituxe9-du-moduxe8le}{%
+\paragraph{Analyse de la validité du modèle
+:}\label{analyse-de-la-validituxe9-du-moduxe8le}}
+
+A partir des résultats obtenus, nous remarquons un ration \(R^2\) de
+0.8879656 qui est assez proche de 1. Cela signifie que les observations
+s'éloignent un peu du modèle prédit. En effet, le graphique observé
+montre une courbe pas tout à fait linéaire.
+
+Afin de visualiser l'écart au modèle, nous traçons la courbe suivante:
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+Nous remarquons que les données suivent bien un modèle linéaire,
+cependant l'écart observé reste important.
+
+\hypertarget{pertinence-des-coefficients-et-du-moduxe8le}{%
+\paragraph{pertinence des coefficients et du
+modèle:}\label{pertinence-des-coefficients-et-du-moduxe8le}}
+
+A partir des informations fournies par R autour du modèle étudié, nous
+remarquons: + des coefficients avec un taux d'erreur (écart-type)
+important allant jusqu'à 5.3 pour l'ordonnée à l'origine et 0.4 pour le
+cofficient directeur, nous ne pouvons donc pas affirmer la pertinence
+des coefficients du modèle linéaire. + la p-valeur de chacun des
+coefficients est très petite inférieure à \(2.2\exp(-16)\)
+
+Ainsi, nous rejetons l'hypothèse que le \(\log(temps)^2\) d'exécution de
+l'algorithme Branch and Bound suit un modèle linéaire.
+
+\hypertarget{uxe9tude-des-hypothuxe8ses-sur-les-ruxe9sidus.}{%
+\paragraph{étude des hypothèses sur les
+résidus.}\label{uxe9tude-des-hypothuxe8ses-sur-les-ruxe9sidus.}}
+
+Les hypothèses sur les résidus à étudier sont les suivantes: + Loi
+normale + Espérance nulle + Variance constante + indépendance Les
+graphiques suivants nous permettent de valider oupas ces dernières.
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+Compte tenue des résultats obtenus, nous remarquons: + Les graphiques
+Residuals vs Fitted et Scale-Location représentent des nuages de points
+très écartés ainsi la variance des résidus n'est pas constante. Ainsi on
+dit que les résidus sont hétéroscédastiques. Les points ne présentent
+une tendance trop marquée sur le graphique, nous pouvons ainsi sire que
+l'espérance est nulle. + Le graphique Normal Q-Q semble être presque
+complétement aligné avec un éloignement de la droite au niveau des
+extrémités, nous aurons donc envie d'affirmer que l'hypothèse de Loi
+normale est vraie (à confirmer avec d'autres tests cf test de
+Shapiro-Wilk) + Le graphique Residuals vs Leverage montre l'influence
+des échantillons. Nous remarquons l'existence d'outliers (points très
+eloignés des autres). Ainsi, une multitude de points ne contribuent pas
+à la construction de la droite du modèle linéaire.
+
+Au vu du rejet de quelques unes des 4 hypothèses, le modèle n'est plus
+valable. Vérifions si les résidus suivent quand même une loi normale.
+
+Pour vérifier si les résidus suivent une loi normale, nous faisons le
+test de Shapiro-Wilk :
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(temps.lm)
+## W = 0.97832, p-value = 0.009224
+\end{verbatim}
+
+Nous obtenons une p-valeur très petite \textless5\% ainsi les résidus
+suivent bien une loi normale.
+
+\hypertarget{comportement-par-rapport-au-nombre-de-sommets-uxe9tude-du-comportement-moyen}{%
+\subsection{2.2. Comportement par rapport au nombre de sommets : étude
+du comportement
+moyen}\label{comportement-par-rapport-au-nombre-de-sommets-uxe9tude-du-comportement-moyen}}
+
+Récupération du temps moyen et traçage des courbes:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{temps.moy <-}\StringTok{ }\KeywordTok{rowMeans}\NormalTok{(temps)}
+\NormalTok{vect_temps_moy <-}\StringTok{ }\KeywordTok{log}\NormalTok{(}\KeywordTok{as.vector}\NormalTok{(temps.moy))}\OperatorTok{^}\DecValTok{2}
+\NormalTok{vect_dim <-}\StringTok{ }\NormalTok{seqn}
+\NormalTok{temps.moy_lm <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(vect_temps_moy}\OperatorTok{~}\NormalTok{vect_dim)}
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{# 2 graphiques sur 1 ligne}
+\KeywordTok{matplot}\NormalTok{(vect_dim, temps.moy, }\DataTypeTok{xlab=}\StringTok{'n'}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{'temps'}\NormalTok{)}
+\KeywordTok{matplot}\NormalTok{(vect_dim, vect_temps_moy, }\DataTypeTok{xlab=}\StringTok{'dimension'}\NormalTok{, }\DataTypeTok{ylab=}\KeywordTok{expression}\NormalTok{(}\KeywordTok{log}\NormalTok{(temps_moy)}\OperatorTok{^}\DecValTok{2}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+La courbe \emph{temps\_moyen} en fonction de \emph{n} suit une tendance
+exponentielle. Ainsi comme la 1ère partie, la courbe
+\(\log(temps.moy)^2\) en fonction de \(n\) devrait correspondre à un
+modèle linéaire comme le montre le graphique.
+
+\hypertarget{ajustement-du-moduxe8le-linuxe9aire-de-logtemps.moy2-en-fonction-de-n.}{%
+\subsubsection{\texorpdfstring{Ajustement du modèle linéaire de
+\(\log(temps.moy)^2\) en fonction de
+\(n\).}{Ajustement du modèle linéaire de \textbackslash log(temps.moy)\^{}2 en fonction de n.}}\label{ajustement-du-moduxe8le-linuxe9aire-de-logtemps.moy2-en-fonction-de-n.}}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = vect_temps_moy ~ vect_dim)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -29.947  -5.314  -2.264  12.819  18.108 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  62.0511    10.3421    6.00 2.43e-05 ***
+## vect_dim     14.3704     0.7979   18.01 1.43e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 16.12 on 15 degrees of freedom
+## Multiple R-squared:  0.9558, Adjusted R-squared:  0.9529 
+## F-statistic: 324.4 on 1 and 15 DF,  p-value: 1.432e-11
+\end{verbatim}
+
+\hypertarget{analyse-de-la-validituxe9-du-moduxe8le-1}{%
+\paragraph{Analyse de la validité du modèle
+:}\label{analyse-de-la-validituxe9-du-moduxe8le-1}}
+
+A partir du résumé réalisé par R concernant le modèle linéaire, nous
+remarquons encore une fois des coefficients pas du tout correctes (car
+écart très important pour les deux coefficients Intercept et vect\_dim
+allant juqu'à 11,93 pour l'ordonnée à l'origine). De plus les p-valeurs
+de ces derniers sont très très faibles. Le coeeficient R-squared est
+égal à 0.936 et se rapproche fortement de 1. Nous rejettons ainsi
+l'hypothèse d'un modèle linéaire.
+
+\hypertarget{etude-des-hypothuxe8ses-sur-les-ruxe9sidus.}{%
+\subparagraph{Etude des hypothèses sur les
+résidus.}\label{etude-des-hypothuxe8ses-sur-les-ruxe9sidus.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{# 4 graphiques, sur 2 lignes et 2 colonnes}
+\KeywordTok{plot}\NormalTok{(temps.moy_lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{itemize}
+\item
+  Les graphiques Residuals vs Fitted et Scale-Location représentent des
+  points peu répartis selon les abscisses ainsi la variance des résidus
+  est constante. Les points présentent une tendance trop marquée sur le
+  graphique, ainsi l'espérance n'est pas nulle.
+\item
+  Le graphique Normal Q-Q semble n'est pas du tout aligné donc les
+  résidus ne suivent pas une loi normale.
+\item
+  Le graphique Residuals vs Leverage montre l'influence des
+  échantillons. Nous ne remarquons pas l'existence d'outliers (points
+  très eloignés des autres ou spécialement en dehors des bornes par
+  rapport à la distance de Cook). Ainsi, une multitude de points
+  contribuent à la construction de la droite du modèle linéaire.
+
+  Compte tenu de ces orbservations, nous pouvons conclure que le modèle
+  n'est pas juste. Afin d'afiner le modèle, on pourrait precéder au
+  nettoyadge des données en éliminant les points abbérrants détectés
+  avec les graphes de résidus.
+\end{itemize}
+
+Pour vérifier si les résidus suivent une loi normale, nous faisons le
+test de Shapiro-Wilk :
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(temps.moy_lm)
+## W = 0.90402, p-value = 0.07932
+\end{verbatim}
+
+Nous obtenons une p-value supérieure à 5\% , on ne peut rien conclure
+sur la loi des résidus ce qui est cohérent avec l'allure du graphique
+Normal Q-Q.
+
+\hypertarget{comportement-par-rapport-uxe0-la-structure-du-graphe}{%
+\subsection{2.3. Comportement par rapport à la structure du
+graphe}\label{comportement-par-rapport-uxe0-la-structure-du-graphe}}
+
+Nous allons ici utiliser des graphes pre-construits pour étudier
+l'execution de l'algorithme avec différents graphs.
+
+Nous nous servons d'un dataset contenant des propriétés pour 73 graphes.
+le temps moyen d'exécution de l'algorithme est déjà résumé par une
+moyenne pour les executions de l'algorithme.
+
+\hypertarget{lecture-du-fichier-donneestsp.csv.}{%
+\paragraph{Lecture du fichier
+`DonneesTSP.csv'.}\label{lecture-du-fichier-donneestsp.csv.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data.graph <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\KeywordTok{read.csv}\NormalTok{(}\StringTok{'DonneesTSP.csv'}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ajustement-du-moduxe8le-linuxe9aire-de-logtemps.moy2-en-fonction-de-toutes-les-variables-pruxe9sentes.-moduxe8le-sans-constante.}{%
+\paragraph{\texorpdfstring{Ajustement du modèle linéaire de
+\(\log(temps.moy)^2\) en fonction de toutes les variables présentes.
+Modèle sans
+constante.}{Ajustement du modèle linéaire de \textbackslash log(temps.moy)\^{}2 en fonction de toutes les variables présentes. Modèle sans constante.}}\label{ajustement-du-moduxe8le-linuxe9aire-de-logtemps.moy2-en-fonction-de-toutes-les-variables-pruxe9sentes.-moduxe8le-sans-constante.}}
+
+Mise en \oe uvre d'une sélection de variables pour ne garder que les
+variables pertinentes.
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = data_temps ~ ., data = data.graph)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.78776 -0.15715  0.01542  0.17260  0.65036 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  6.4903426  0.5450715  11.907  < 2e-16 ***
+## dim          3.4191719  0.2391476  14.297  < 2e-16 ***
+## mean.long   -4.8152962  0.7294055  -6.602 1.05e-08 ***
+## mean.dist   -0.0020048  0.0010633  -1.886  0.06404 .  
+## sd.dist      0.0048105  0.0006652   7.231 8.55e-10 ***
+## mean.deg    -0.1367369  0.0425459  -3.214  0.00208 ** 
+## sd.deg       0.1399515  0.0872430   1.604  0.11376    
+## diameter    -0.0646816  0.1566329  -0.413  0.68107    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2912 on 62 degrees of freedom
+## Multiple R-squared:  0.986,  Adjusted R-squared:  0.9844 
+## F-statistic: 622.6 on 7 and 62 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+On créer un modèle linéaire multi-dimensionnel pour l'ensemble des
+dimensions disponibles sur le dataset contenant les résultats
+d'exécution pour les différents graphs.
+
+On remarque que les coefficients du modèle linéaire obtenu sont plus ou
+moins importants par rapport à leus valeurs. Les coéfficients les plus
+faibles correspondent aux paramètres les moins pertinents pour notre
+étude (par exemple le diamètre).
+
+\hypertarget{mise-en-uvre-dune-suxe9lection-de-variables-pour-ne-garder-que-les-variables-pertinentes.}{%
+\paragraph{\texorpdfstring{Mise en \oe uvre d'une sélection de variables
+pour ne garder que les variables
+pertinentes.}{Mise en uvre d'une sélection de variables pour ne garder que les variables pertinentes.}}\label{mise-en-uvre-dune-suxe9lection-de-variables-pour-ne-garder-que-les-variables-pertinentes.}}
+
+Nous appliquons la fonction step de R qui nous permet d'éliminer les
+coefficients non pertienents pour notre étude.
+
+Nous obtenons le résumé suivant:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{new_lm <-}\KeywordTok{step}\NormalTok{(data_temps.lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=-165.23
+## data_temps ~ dim + mean.long + mean.dist + sd.dist + mean.deg + 
+##     sd.deg + diameter
+## 
+##             Df Sum of Sq     RSS      AIC
+## - diameter   1    0.0145  5.2711 -167.038
+## <none>                    5.2566 -165.230
+## - sd.deg     1    0.2182  5.4748 -164.384
+## - mean.dist  1    0.3014  5.5581 -163.327
+## - mean.deg   1    0.8757  6.1324 -156.444
+## - mean.long  1    3.6951  8.9517 -129.965
+## - sd.dist    1    4.4335  9.6902 -124.417
+## - dim        1   17.3311 22.5877  -65.176
+## 
+## Step:  AIC=-167.04
+## data_temps ~ dim + mean.long + mean.dist + sd.dist + mean.deg + 
+##     sd.deg
+## 
+##             Df Sum of Sq     RSS      AIC
+## <none>                    5.2711 -167.038
+## - sd.deg     1    0.2065  5.4776 -166.349
+## - mean.dist  1    0.6554  5.9265 -160.835
+## - mean.deg   1    0.9820  6.2531 -157.080
+## - mean.long  1    3.8220  9.0931 -130.869
+## - sd.dist    1    4.9133 10.1844 -122.935
+## - dim        1   18.7788 24.0499  -62.785
+\end{verbatim}
+
+Nous remarquons que la fonction step à éliminer la dimension diameter
+qui n'est donc pas pertinenet pour notre étude afin de minimiser l'AIC.
+Vérifions maintenant la pertinence du nouveau modèle.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(new_lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = data_temps ~ dim + mean.long + mean.dist + sd.dist + 
+##     mean.deg + sd.deg, data = data.graph)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.78246 -0.15445  0.00111  0.18027  0.63156 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  6.3960078  0.4916227  13.010  < 2e-16 ***
+## dim          3.4440771  0.2298893  14.981  < 2e-16 ***
+## mean.long   -4.8548566  0.7183110  -6.759 5.25e-09 ***
+## mean.dist   -0.0022837  0.0008160  -2.799  0.00680 ** 
+## sd.dist      0.0048833  0.0006372   7.663 1.39e-10 ***
+## mean.deg    -0.1408227  0.0411061  -3.426  0.00108 ** 
+## sd.deg       0.1269156  0.0807943   1.571  0.12123    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2893 on 63 degrees of freedom
+## Multiple R-squared:  0.9859, Adjusted R-squared:  0.9846 
+## F-statistic:   736 on 6 and 63 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+Nous remarquons que le coefficient du test de Fisher a augmenté par
+rapport au modèle avant réduction des degrés de liberté. La p-valeur
+reste très faible. ainsi le modèle est bien validée.
+
+\hypertarget{remarque-par-rapport-aux-paramuxe8tres-retenus}{%
+\subparagraph{Remarque par rapport aux paramètres
+retenus}\label{remarque-par-rapport-aux-paramuxe8tres-retenus}}
+
+Compte tenu des résulats obtenu suite à la réduction des degrés de
+liberté du modèle, nous remarquons que certains coeeficients sont bien
+retenus bien que ceux ci semblent pas pertienents pour l'étude de
+manière individuelle. Ceci st le cas pour sd.dist ou encore sd.deg qui
+ne semblent être d'une grande influence sur le modèle au vu de leur
+faible coefficient. Cependant, il semble rapporter une plus-value pour
+l'ensemble du modèle.
+
+\hypertarget{analyse-de-la-validituxe9-du-moduxe8le-2}{%
+\paragraph{Analyse de la validité du modèle
+:}\label{analyse-de-la-validituxe9-du-moduxe8le-2}}
+
+\hypertarget{pertinence-des-coefficients-et-du-moduxe8le-1}{%
+\subparagraph{pertinence des coefficients et du
+modèle,}\label{pertinence-des-coefficients-et-du-moduxe8le-1}}
+
+Nous remarquons des coefficients plus ou moins importants selon leur
+pertinenence avec des écarts plutôt corrects (en comparaison avec les
+modèles étudiés auparavant). Les p valeurs sont assez faibles pour la
+globalité des coefficients. Nous pouvons ainsi conclure de la
+pertinenece des coefficients du modèle linéaire multidimensionnel. Le
+vecteur directeur de ce modèle présente des coefficients corrects. La
+constante à l'origine ne présente pas d'écart important (seulement 0.49
+vs 13.10 pour les premiers modèles).
+
+\hypertarget{uxe9tude-des-hypothuxe8ses-sur-les-ruxe9sidus.-1}{%
+\subparagraph{étude des hypothèses sur les
+résidus.}\label{uxe9tude-des-hypothuxe8ses-sur-les-ruxe9sidus.-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{# 4 graphiques, sur 2 lignes et 2 colonnes}
+\KeywordTok{plot}\NormalTok{(new_lm)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{TPstat_CR_files/figure-latex/unnamed-chunk-24-1.pdf} +
+Les graphiques Residuals vs Fitted et Scale-Location représentent des
+points peu répartis selon les abscisses ainsi la variance des résidus
+est constante. Les points présentent une tendance pas très marquée sur
+le graphique, ainsi l'espérance est nulle. + Le graphique Normal Q-Q
+semble être presque complétement aligné avec un éloignement de la droite
+au niveau des extrémités, nous aurons donc envie d'affirmer que
+l'hypothèse de Loi normale pour les résidus est vraie (à confirmer avec
+d'autres tests cf test de Shapiro-Wilk) + Le graphique Residuals vs
+Leverage montre l'influence des échantillons. Nous ne remarquons pas
+l'existence d'outliers (points très eloignés des autres ou spécialement
+en dehors des bornes par rapport à la distance de Cook). Ainsi, une
+multitude de points contribuent à la construction de la droite du modèle
+linéaire.
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuals(new_lm)
+## W = 0.98094, p-value = 0.3641
+\end{verbatim}
+
+Nous obtenons une p-value = 36.41\% \textgreater{} 5\% on ne peut
+conclure que les résidus suivent une loi normale.
+
+\end{document}
