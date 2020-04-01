@@ -110,7 +110,7 @@ Comparaison des longueurs de différentes méthodes :
 
 Les boxplots ci dessus correspondent respectivement aux algorithme "branch", "nearest", "repetitive_nn", "farthest_insertion" et "two_opt". (de gauche à droite).
 
-la boite de l'algorithme Branch & Bound nous permet de voir qu'après 50 essais, cet algorithme obtient la plus petote valeur minimale, maximale et moyenne, ce qui en fait l'algorithme avec les meilleurs résultats sur les 50 tests parmi les 5 méthodes de calcul des plus courts chemins disponibles.
+la boite de l'algorithme Branch & Bound nous permet de voir qu'après 50 essais, cet algorithme obtient la plus petite valeur minimale, maximale et médiane, ce qui en fait l'algorithme avec les meilleurs résultats sur les 50 tests parmi les 5 méthodes de calcul des plus courts chemins disponibles.
 
 On observe sur le diagramme a moustache un léger avantage pour l'algorithme Branch & Bound qui obtient une longueur des chemin hamiltonien moyenne plus courte sur les 50 exécutions.
 
