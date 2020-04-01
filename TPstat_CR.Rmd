@@ -248,7 +248,6 @@ Nous remarquons que les données suivent bien un modèle linéaire, cependant l'
   
 A partir des informations fournies par R autour du modèle étudié, nous remarquons: 
     + des coefficients avec un taux d'erreur (écart-type) important allant jusqu'à 5.3 pour l'ordonnée à l'origine et 0.4 pour le cofficient directeur, nous ne pouvons donc pas affirmer la pertinence des coefficients du modèle linéaire.
-    + la p-valeur de chacun des coefficients est très petite inférieure à $2.2\exp(-16)$
 
 Ainsi, nous rejetons l'hypothèse que le $\log(temps)^2$ d'exécution de l'algorithme Branch and Bound suit un modèle linéaire.
   
@@ -303,8 +302,9 @@ summary(temps.moy_lm)
 
 #### Analyse de la validité du modèle : 
 
-A partir du résumé réalisé par R concernant le modèle linéaire, nous remarquons encore une fois des coefficients pas du tout correctes (car écart très important pour les deux coefficients Intercept et vect_dim allant juqu'à 11,93 pour l'ordonnée à l'origine). De plus les p-valeurs de ces derniers sont très très faibles. Le coeeficient R-squared est égal à 0.936 et se rapproche fortement de 1. 
-Nous rejettons ainsi l'hypothèse d'un modèle linéaire.
+A partir du résumé réalisé par R concernant le modèle linéaire, nous remarquons encore une fois des coefficients pas du tout correctes (car écart très important pour les deux coefficients Intercept et vect_dim allant juqu'à 11,93 pour l'ordonnée à l'origine). Le coeeficient R-squared est égal à 0.936 et se rapproche fortement de 1 et la p-valeur su tests de Fisher est très faible. 
+
+Nous pouvons ainsi affirmer l'hypothèse de la linéarité du modèle.
 
 ##### Etude des hypothèses sur les résidus.
   
