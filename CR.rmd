@@ -1,0 +1,420 @@
+---
+title: "TP Statistique"
+author: "Mathieu Richelmy, Arthur Tondereau, Yoan Simiad--Cossin"
+date: "31 mars 2020"
+output: pdf_document
+---
+
+# 0. Visualisation de chemins
+```{r, echo=FALSE}
+set.seed(287)
+library(sp)
+library(maps)
+library(microbenchmark)
+library(TSP)
+library(TSPpackage)
+```
+
+On commence par prendre en main l'environnement de travail, les package et données fournis pour le calcul de plus courts chemins.
+```{r, echo=FALSE}
+villes <- read.csv('DonneesGPSvilles.csv',header=TRUE,dec='.',sep=';',quote="\"")
+str(villes)
+```
+
+Représentation des chemins par plus proches voisins et du chemin optimal :
+
+```{r, echo=TRUE}
+coord <- cbind(villes$longitude,villes$latitude)
+dist <- distanceGPS(coord)
+voisins <- TSPnearest(dist)
+
+pathOpt <- c(1,8,9,4,21,13,7,10,3,17,16,20,6,19,15,18,11,5,22,14,12,2)
+
+par(mfrow=c(1,2),mar=c(1,1,2,1))
+plotTrace(coord[voisins$chemin,], title='Plus proches voisins')
+plotTrace(coord[pathOpt,], title='Chemin optimal')
+```
+
+
+Les longueurs des trajets (à vol d'oiseau) valent respectivement, pour la méthode des plus proches voisins :
+
+```{r, echo=FALSE}
+voisins$longueur
+```
+et pour la méthode optimale :
+```{r, echo=FALSE}
+calculeLongueur(dist,pathOpt)
+```
+
+Ceci illustre bien l'intérêt d'un algorithme de voyageur de commerce. Nous allons dans la suite étudier les performances de cet algorithme.
+
+
+# 1. Comparaison d'algorithmes
+
+Dans cette partie nous allons comparer la méthode Branch&Bound (aussi appelée "branch" par la suite) utilisée lors du TP de AAIA avec d'autres méthodes similaires :
+
+  * "repetitive_nn", disponible dans le paquet TSP de R
+  * "nearest_insertion", disponible dans le paquet TSP de R
+  * "two_opt", également disponible dans le paquet TSP de R
+  * "nearest", ou la méthode des "plus proches voisins", issue du TP de AAIA
+
+Afin de les comparer, nous allons réaliser des mesures sur des graphes de 10 sommets (n = 10), dont les coordonnées cartésiennes sont des lois uniformes sur [0,1].
+
+Le code nous permettant de générer ces graphes est le suivant :
+
+```{r, echo=TRUE}
+      n <- 10
+sommets <- data.frame(x = runif(n), y = runif(n))
+  couts <- distance(sommets)
+```
+
+## 1.1. Longueur des chemins
+
+Dans un premier temps, nous allons nous intéresser à la longueur des chemins obtenus à l'aide de ces différentes méthodes. Nous allons donc comparer les différents résultats obtenus à l'aide d'outils statistiques.
+
+   * Boîtes à moustaches (ou boxplots)
+
+      Le code utilisé pour générer les boîtes à moustache (boxplots) des longueurs des chemins hamiltoniens, obtenus à l'aide des différentes méthodes et sur 50 réalisations, est le suivant :
+      
+```{r, echo=TRUE}
+  n <- 10
+  nbTest <- 50
+
+  methods <- c("repetitive_nn", "nearest_insertion", "two_opt", "nearest", "branch")
+  result  <- list()
+  lconfig <- vector("list", n)
+
+  for(numConfig in 1:nbTest) {
+    lconfig[[numConfig]] <- data.frame(x = runif(n), y = runif(n))
+  }
+
+  for (metId in 1:5){
+    met     <- methods[metId]
+    dataMet <- vector("logical",n)
+
+    for(numConfig in 1:nbTest) {
+      cost               <- distance(lconfig[[numConfig]])
+      dataMet[numConfig] <- TSPsolve(cost,met)
+    }
+
+    result[[metId]] <- dataMet
+  }
+
+  boxplot(result)
+```
+
+      Les boxplots obtenus correspondent aux méthodes "repetitive_nn", "nearest_insertion", "two_opt", "nearest" et "branch" (de gauche à droite).
+
+      On remarque que l'algorithme Branch&Bound codé lors du TP de AAIA est légèrement meilleur (en terme de plus cours chemins) que les autres algorithmes. En effet, la boîte à moustaches correspondant à cet algorithme et obtenue sur les mesures décrites ci-dessus, possède le(la) plus petit(e) valeur minimale, valeur maximale, premier quartile, médiane, troisième quartile.
+
+      Au vu des boxplots, on peut donc affirmer (dans ce cas de figure précis et avec les mesures choisies précédemment) que les longueurs des chemins obtenus par l'algorithme Branch&Bound sont en moyenne plus petites que celles obtenues avec les autres algorithmes. L'algorithme Branch&Bound est donc plus performant.
+
+   * Comparaison des algorithmes des plus proches voisins et de Branch&Bound
+
+      On va maintenant comparer les algorithmes des plus proches voisins et de Branch&Bound entre eux. Pour se faire, nous allons réaliser un test d'hypothèses paramétriques (étant donné que les longueurs obtenues suivent une loi normale).
+
+      Soit m<sub>nn</sub> et m<sub>b</sub> les espérances respectives des algorithmes des plus proches voisins et de Branch&Bound. Les hypothèses de notre test vont être :
+
+        * (H<sub>0</sub>) -> m<sub>nn</sub> - m<sub>b</sub> <= 0
+        * (H<sub>1</sub>) -> m<sub>nn</sub> - m<sub>b</sub> > 0
+
+      On va donc calculer la p-value associée à ce test afin de savoir si l'on rejette l'hypothèse H<sub>0</sub>.
+
+      Le code utilisé pour réaliser ce test est le suivant (avec result[[4]] les longueurs obtenues par l'algorithme des plus proches voisins et result[[5]] celles obtenues par l'algorithme de Branch&Bound) :
+
+```{r, echo=TRUE}
+  t.test(result[[4]], result[[5]], mu=0, paired=TRUE, alternative='greater')
+```
+
+      On obtient alors une p-value de l'ordre de 10<sup>-7</sup> à 10<sup>-14</sup>. On rejette donc l'hypothèse H<sub>0</sub> puisque l'on a p-value <= alpha = 1%.
+
+      Cela signifie donc que l'on a m<sub>nn</sub> > m<sub>b</sub> (H<sub>1</sub>), et donc que l'espérance des longueurs obtenues à partir de l'algorithme de Branch&Bound est plus faible que celle de l'algorithme des plus proches voisins.
+
+      On peut donc affirmer (dans ce cas de figure précis et avec les mesures choisies précédemment) que les longueurs des chemins obtenus par l'algorithme Branch&Bound sont en moyenne plus petites que celles obtenues avec l'algorithme des plus proches voisins. L'algorithme Branch&Bound est donc plus performant que celui des plus proches voisins. Cela est cohérent avec les résultats obtenus à la question précédente.
+
+   * Comparaison 2 à 2 des longueurs moyennes obtenues par les algorithmes
+
+      Maintenant, on va comparer les longueurs moyennes obtenues entre elles, 2 à 2. Pour se faire, nous allons tester les hypothèses suivantes (avec i != j) :
+
+        * (H<sub>0</sub>) -> m<sub>i</sub> = m<sub>j</sub>
+        * (H<sub>1</sub>) -> m<sub>i</sub> != m<sub>j</sub>
+      
+      Le code utilisé pour réaliser ces tests est le suivant :
+      
+```{r, echo=TRUE}
+  getValuesTest <- function(methods, nbSommet, nbRep) {
+    n       <- nbSommet
+    nbTest  <- nbRep
+    result  <-list()
+    lconfig <- vector("list",n)
+
+    for(numConfig in 1:nbTest) {
+      lconfig[[numConfig]] <- data.frame(x = runif(n), y = runif(n))
+    }
+
+    for (metId in 1:5) {
+      met     <-methods[metId]
+      dataMet <- vector("logical",n)
+
+      for(numConfig in 1:nbTest) {
+        cost               <- distance(lconfig[[numConfig]])
+        dataMet[numConfig] <- TSPsolve(cost,met)
+      }
+      
+      result[[metId]] <- dataMet
+    }
+      
+    return(result)
+  }
+
+  nbSommet     <- 10
+  nbTest       <-50
+
+  methods      <- c("repetitive_nn","nearest_insertion","two_opt","nearest","branch")
+  res          <- getValuesTest(methods,nbSommet,nbTest)
+  methodsPlain <- c(rep("repetitive_nn", nbTest),rep("nearest_insertion", nbTest),rep("two_opt", nbTest),rep("nearest", nbTest),rep("branch", nbTest))
+  pairwise.t.test(unlist(res),methodsPlain,adjust.method='bonferroni')
+```
+
+      On obtient alors un tableau de p-value. Pour chaque p-value <= alpha (où alpha représente le risque, généralement 5%), on rejette H<sub>0</sub>. On a alors m<sub>i</sub> != m<sub>j</sub>, ce qui signifie que les 2 algorithmes en question ont des espérances différentes (et donc des longueurs de chemins différentes en moyenne). On peut également raisonner à l'inverse, lorsque H<sub>0</sub> n'est pas rejetée, ce qui signifie que les 2 algorithmes en question ont des longueurs de chemins identiques en moyenne.
+
+      Dans nos résultats, les algorithmes ayant des espérances différentes (avec un risque alpha = 5%) sont les couples suivant :
+
+        * nearest / branch
+        * nearest_insertion / branch
+        * two_opt / branch
+        * repetitive_nn / nearest
+        * two_opt / repetitive_nn
+
+      On remarque que les algorithmes "nearest" (plus proches voisins) et "branch" (Branch&Bound) ont des espérances différentes, ce qui rejoint le résultat obtenu précédemment (m<sub>nn</sub> > m<sub>b</sub>).
+
+## 1.2. Temps de calcul
+
+Dans un second temps, nous allons comparer les temps de calcul des différents algorithmes à l'aide du package microbenchmark. Nous effecturons ces comparaisons sur 20 graphes de 10 sommets, dont les coordonnées sont des lois uniformes sur [0,1].
+
+La fonction microbenchmark (grâce au package multcomp) va comparer les temps d'exécution des algorithmes 2 à 2 en réalisant le test ayant les hypothèses suivantes (où m représente l'espérance en temps, avec un risque alpha = 5%) :
+
+  * (H<sub>0</sub>) -> m<sub>i</sub> = m<sub>j</sub>
+  * (H<sub>1</sub>) -> m<sub>i</sub> != m<sub>j</sub>
+
+Elle va ensuite attribuer des lettres ('a' pour les algorithmes les plus rapides et ainsi de suite), et va attribuer la même lettre à deux algorithmes si l'hypothèse H<sub>0</sub> n'est pas rejetée (donc si m<sub>i</sub> = m<sub>j</sub>).
+
+Le code exécuté pour ces comparaisons est le suivant :
+
+```{r, echo=TRUE}
+  n      <- 10
+  nbTest <- 20
+
+  microbenchmark(
+    TSPsolve(couts, "repetitive_nn"),
+    TSPsolve(couts, "nearest_insertion"),
+    TSPsolve(couts, "two_opt"),
+    TSPsolve(couts, "nearest"),
+    TSPsolve(couts, "branch"),
+    times=nbTest,
+    setup={
+      sommets <- data.frame(x = runif(n), y = runif(n))
+      couts <- distance(sommets)
+  })
+```
+
+On remarque alors que les algorithmes "two_opt" et "nearest" sont les plus rapides et ont des espérances équivalentes (ils ont donc des temps d'exécution relativement identiques). On remarque également que l'algorithme Branch&Bound arrive en 4<sup>ème</sup> position (lettre 'c'). On peut donc affirmer que le Branch&Bound est moins efficace (en temps) que tous les autres algorithmes, excepté "repetitive_nn". Cependant, il reste le plus performant...
+
+
+# Etude de la complexité de l’algorithme Branch&Bound
+
+## 2.1. Comportement par rapport au nombre de sommets : premier modèle
+
+Récupération du temps sur 10 graphes pour différentes valeurs de $n$.
+
+
+```{r,echo=TRUE,fig.align='center'}
+library("microbenchmark")
+seqn <- seq(4,20,1)
+nLignes <- length(seqn)
+n_rep <- 10
+temps <- matrix(0,nrow=nLignes,ncol=n_rep)
+for (i in 1:nLignes){
+   temps[i,]<- microbenchmark(TSPsolve(couts, method = 'branch'),
+    times = n_rep,
+    setup = {
+      n <- seqn[i]
+      couts <- distance(cbind(x = runif(n), y = runif(n)))}
+    )$time
+}
+```
+Visualisation de *temps* en fonction de *n*, puis de *$\log(temps)^2$* en fonction de *n* :
+
+
+```{r, echo=FALSE}
+par(mfrow=c(1,2)) # 2 graphiques sur 1 ligne
+matplot(seqn, temps, xlab='n', ylab='temps')
+matplot(seqn, log(temps)^2, xlab='n', ylab=expression(log(temps)^2))
+```
+
+Sur ces deux graphiques, nous pouvons observer le comportement exponentielle de *temps* en fonction de *n*, c'est pourquoi le modèle de *$\log(temps)^2$* en fonction de *n* justifie une régression linéaire.
+
+Ajustement du modèle linéaire de *$\log(temps)^2$* en fonction de *$n$*: 
+Ci-dessous le resultat de $summary(temps.lm)$ : 
+
+
+```{r, echo=FALSE}
+vect_temps <- log(as.vector(temps))^2
+vect_dim <- rep(seqn,times=10)
+temps.lm <- lm(vect_temps~vect_dim)
+summary(temps.lm)
+```
+Nous cherchons à analyser le comportement linéaire entre les deux variables. En récupérant le $R^2$, nous obtenons `r summary(temps.lm)$r.squared` , ce qui est relativement faible. Néanmoins, cela reste cohérent avec le graphique observé précedement, qui ne suivait pas un alignement exact.
+
+
+```{r,echo=FALSE}
+matplot(seqn, log(temps)^2, xlab='n', ylab=expression(log(temps)^2))
+abline(temps.lm)
+```
+
+
+En ajoutant la droite de régression linéaire à la réprésentation des points (ligne noire), elle semble correspondre mais avec un large intervalle de prédiction.
+
+Analyse de la validité du modèle : 
+
+Pour reprendre le informations extraites par R sur la régression linéaire, nous pouvons déduire :
+* les coefficients ont un ecart-type assez important, ils sont donc peu significatifs (surtout la constante avec un ecart-type de 5.6)
+* la p-value est inférieure à $2.2\exp(-16)$ ce qui rejète l'hypothèse de faire un modèle linéaire. 
+Le modèle n'est donc pas précis, voir valide.
+
+Etude des hypothèses sur les résidus:
+
+
+```{r, echo=FALSE}
+par(mfrow=c(2,2)) # 4 graphiques, sur 2 lignes et 2 colonnes
+plot(temps.lm)
+```
+
+* Sur le 1er graphique, l'homogénéité de la variance n'est vérifiée, puisque les points sont répartis selon les abcisses (plusieurs lignes verticales qui se distinguent).
+* Sur le 2nd graphique, on a des points proches de la ligne, on valide donc l'hypothèse d'avoir des données isssues d'une loi gaussienne.
+
+On peut conclure que le modèle n'est pas juste. Pour étudier chaque cas plus précisément, il faudrait séparer les cas de la matrice *temps*, ou les regrouper sous une même valeur, pour réduire les degé de liberté.
+
+Pour vérifier si les résidus suivent une loi normale, nous faisons le test de Shapiro-Wilk : 
+  
+```{r, echo=FALSE}
+shapiro.test(residuals(temps.lm))
+```
+Nous obtenons une p-value inférieure à 5% , l'hypothèse est donc invalidée.
+
+## 2.2. Comportement par rapport au nombre de sommets : étude du comportement moyen
+
+Récupération du temps moyen et tracer des courbes à étudier : 
+
+```{r}
+temps.moy <- rowMeans(temps)
+vect_temps_moy <- log(as.vector(temps.moy))^2
+vect_dim <- seqn
+temps.moy_lm <- lm(vect_temps_moy~vect_dim)
+summary(temps.moy_lm)
+par(mfrow=c(1,2)) # 2 graphiques sur 1 ligne
+matplot(vect_dim, temps.moy, xlab='n', ylab='temps')
+matplot(vect_dim, vect_temps_moy, xlab='dimension', ylab=expression(log(temps_moy)^2))
+```
+
+En tracant le graphe *temps_moyen* en fonction de *n*, nous observons une tendance exponentielle. Ainsi comme dans la partie 1, en traçant la courbe $\log(temps.moy)^2$ en fonction de $n$, nous voyons qu'un modèle linéaire pourrait s'y prêter, d'où la régression linéaire *temps.moy_lm*.
+<
+Analyse de la validité du modèle : 
+
+  + Les coefficients obtenus sont peu intéressants, car ils ont un grand écart-type (supérieur à 0 dans les deux cas).
+  + Néanmoins, le $R^2$ est égale à 0.9368, il est donc déjà plus correct par rapoprt à celui obtenu dans la partie 1. 
+  + la p-value est égale à $2.1^(-10)$ elle rejète donc l'hypothèse d'un modèle linéaire.
+
+Etude des hypothèses sur les résidus.
+  
+```{r}
+par(mfrow=c(2,2)) # 4 graphiques, sur 2 lignes et 2 colonnes
+plot(temps.moy_lm)
+```
+
+* Sur le 1er graphique, l'homogénéité de la variance est vérifiée, puisque les points ne sont pas répartis selon les abcisses<.
+* Sur le 2nd graphique, on a des points assez éloignés de la droite de tendance, on ne valide donc pas l'hypothèse d'avoir des données isssues d'une loi gaussienne.
+
+On peut conclure que le modèle n'est pas juste. Le temps moyen de l'algorythme en fonction du nombre de sommets du graphe ne valide pas l'hypothèse d'homoscedasticité. 
+Afin d'affiner notre résultat, nous pouvons supprimer les points abérrants détecter avec les graphes de résidus (ici le point 15) pour limiter leur impact.
+Pour vérifier si les résidus suivent une loi normale, nous faisons le test de Shapiro-Wilk : 
+
+```{r, echo=FALSE}
+shapiro.test(residuals(temps.moy_lm))
+```
+
+Nous en tirons une p-value supérieure à 5% ainsi nous validons l'hypothèse que les résidus suivent une loi gaussienne. 
+  
+
+## 2.3. Comportement par rapport à la structure du graphe
+
+Nous allons ici utiliser des graphes pré construits pour étudier l'execution de l'algorithme avec différentes topologies de graphes.
+
+Nous nous servons d'un dataset contenant des propriétés pour 73 graphes. La donnée de temps est déjà aggrégée par une moyenne pour les executions de l'algorithme.
+
+Les modèles linéaires appris dans cette partie peuvent difficilement être montrés graphiquement, puisque ce sont des fonctions qui prennent un nombre de dimensions relativement élevé en entrée. 
+On est loin de considérations big data mais une fonction avec 5-6 dimensions en entrée ne peut déjà pas bien se representer en 2D...
+
+### Ajustement du modèle linéaire de $\log(temps.moy)$ en fonction de toutes les variables présentes.
+Nous effectuons la regression linéaire attendue et obtenons comme resultats le modèle ci dessous: 
+
+```{r, echo=TRUE}
+data.graph <- data.frame(read.csv('DonneesTSP.csv'))
+data_temps <- log(data.graph$tps)
+data.graph$dim <- sqrt(data.graph$dim)
+data.graph$tps <- NULL
+data_temps.lm <-lm(data_temps~.,data = data.graph)
+coef(data_temps.lm)
+```
+On remarque que certaines dimensions ont un rôle plus dominant que d'autres. En particulier et assez logiquement la dimension du graphe et la longueur moyenne des chemins ont une grosse influence sur le résultat.
+
+On peut chercher à interpréter le modèle pour ces variables : plus la dimension est grande et plus le temps de calcul est long, mais la moyenne de la longueur des chemins est relativement grande alors la fonction de bound de l'algorithme aura plus de facilité à élaguer l'espace de recherche et le temps de calcul se réduit.
+Cette deuxième interprétation est toutefois hasardeuse compte tenu de l'erreur importante sur cette dimension.
+On peut étudier les propriétés de ce modèle : 
+```{r,echo=TRUE}
+summary(data_temps.lm)
+shapiro.test(residuals(data_temps.lm))
+```
+
+### Ajustement du modèle linéaire de $\log(temps.moy)^2$ en fonction de toutes les variables présentes. Modèle sans constante.
+
+On utilise ici le log au carré du temps pour la série que l'on essaie de prédire, en étudiant si l'utilisation d'un modèle linéaire est plus appropriée que précédemment.
+```{r, echo=FALSE}
+data.graph <- data.frame(read.csv('DonneesTSP.csv'))
+data_temps <- log(data.graph$tps)^2
+data.graph$dim <- sqrt(data.graph$dim)
+data.graph$tps <- NULL
+data_temps.lm <-lm(data_temps~.,data = data.graph)
+summary(data_temps.lm)
+```
+
+Ce nouveau modèle a des propriétés similaire au précédent en terme de dimensions significatives et de répartition de l'erreur standard entre les dimensions.
+On fait le même test sur les résiduts que précedement : 
+```{r,echo=TRUE}
+shapiro.test(residuals(data_temps.lm))
+```
+
+### Mise en \oe uvre d'une sélection de variables pour ne garder que les variables pertinentes.
+
+On peut opérer une sélection des variables pour réduire la dimension de l'entrée du modèle et augmenter son explicabilité.
+
+On évolue à partir du modèle linéaire prenant le log du temps au carré. On va ici utiliser la fonction step qui permet de faire cette réduction de manière automatique.
+```{r, echo = TRUE}
+new_lm <-step(data_temps.lm)
+```
+
+On voit ici que l'indicateur AIC a légèrement diminué, et que nous avons éliminé la dimension mean.dist de l'entrée. C'est une dimension sur laquelle le coefficient était très faible, c'est donc normal qu'elle soit éliminée en prioritée.
+
+### Analyse de la validité du modèle : 
+
+  * pertinence des coefficients et du modèle,
+  
+  On voit ici que les modèles prédits utilisent de manière très inégale les dimensions des données d'entrée, jusqu'à quasiment en ignorer certaines, qui peuvent être supprimées pour augmenter l'explicabilité du modèle.
+  Les p-valeur des modèles calculés sont très faibles, ce qui rejette l'hypothese de modèles linéaire prenant ces variables en entrée. On pourrait potentiellement trouver des modèles linéaires plus adapté en utilisant d'autres manipulations non linéaires (log, puissance, racine, etc) sur les données en entrée.
+
+
+
+  * étude des hypothèses sur les résidus
+
+  Avec les modèles déduits des données on voit que les tests de Shapiro-Wilk permettent de supposer la répartition normale des résiduts des modèles.
+  On a dans chaque cas des p-valeur élevées ( > 35% ), on ne peut donc pas conclure que les résiduts ne sont pas répartis selon une loi normale. Cela montre que nos modèles sont bien construits.
